@@ -7,3 +7,7 @@ staticresources
 request.xml
 response.xml
 scratch.txt
+.DS_Store
+.session
+Worklabs.tmproj
+.lastbuild
