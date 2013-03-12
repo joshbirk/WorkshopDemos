@@ -1,0 +1,8 @@
+<apex:page standardController="Monkey__c">
+    <apex:form >
+    {!Monkey__c.Full_Name__c}
+     New Name:  <apex:inputField value="{!Monkey__c.Name}" />
+     <apex:commandButton value="Update Name" action="{!save}" />
+        
+    </apex:form>
+</apex:page>

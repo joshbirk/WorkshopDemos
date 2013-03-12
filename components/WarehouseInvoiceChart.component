@@ -1,0 +1,10 @@
+<apex:component controller="WarehouseChartController">
+<apex:attribute name="invoiceID" type="ID" description="The ID of the Invoice holding the Line Items" assignTo="{!invoiceID}"/>
+<apex:chart data="{!data}" height="400" width="500" background="#F5F5F5">
+    <apex:legend position="left"/>
+    <apex:pieSeries labelField="name" dataField="data" donut="10">
+        <apex:chartLabel display="middle" orientation="vertical"  font="bold 18px Helvetica"/>
+    </apex:pieSeries>
+</apex:chart>
+
+</apex:component>

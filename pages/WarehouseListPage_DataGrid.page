@@ -1,0 +1,64 @@
+<apex:page controller="WarehouseListPage_Remote" showHeader="false" standardStylesheets="false" readOnly="true">
+<apex:stylesheet value="{!URLFOR($Resource.jQueryUI,'css/smoothness/jquery-ui-1.9.2.custom.min.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.jqGrid,'css/ui.jqgrid.css')}" />
+<script src="{!URLFOR($Resource.jqGrid,'js/jquery-1.9.0.min.js')}" type="text/javascript"></script>
+<script src="{!URLFOR($Resource.jqGrid,'js/i18n/grid.locale-en.js')}" type="text/javascript"></script>
+<script src="{!URLFOR($Resource.jqGrid,'js/jquery.jqGrid.min.js')}" type="text/javascript"></script>
+
+<script>	
+	j$ = jQuery.noConflict();
+	var lastSel;
+	j$(document).ready(function(){ 
+	  j$("#list").jqGrid({
+	    datatype: 'local',
+	    colNames:['Name', 'Quantity'],
+	    colModel :[ 
+	      {name:'Name', index:'Name', width:200}, 
+	      {name:'Quantity__c', index:'Quantity__c', width:85},
+	    ],
+		onSelectRow: function(id){
+		     if(id && id!==lastSel){ 
+		        j$('#list').restoreRow(lastSel); 
+		        lastSel=id; 
+		     }
+		     j$('#list').editRow(id, true); 
+			 alert(id);
+		   },
+	    sortname: 'Name',
+	    sortorder: 'desc',
+		rowList:[10,20,30],
+		pager: '#pager',
+	    caption: 'Inventory List',
+		width: 285,
+		height: 240
+	  });
+	  callData();
+	}); 
+
+	j$.extend(j$.fn.jqGrid, { setData: function(data) {
+	    this[0].p.data = data;
+	    return true;
+	} } );
+
+
+	function callData() {
+		WarehouseListPage_Remote.getMerchandise(function handleData(results,msg) {
+			console.log(results);
+			j$("#list").jqGrid('setData', results);
+			j$("#list").trigger('reloadGrid', [{ page: 1}]);
+		});	
+	}
+	
+	function updateQuantity(recordId,quantity) {
+		WarehouseListPage_Remote.updateQuantity(recordId,quantity,function(res,mes) {
+			document.getElementById("output").innerHTML = res;
+		});
+	}
+	</script>
+
+	<body>
+	<div id="output"></div>
+	<table id="list"><tr><td></td></tr></table> 
+	<div id="pager"></div>
+	</body>
+</apex:page>

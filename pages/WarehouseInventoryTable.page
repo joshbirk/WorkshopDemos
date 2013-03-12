@@ -1,0 +1,16 @@
+<apex:page StandardController="Merchandise__c" RecordSetVar="merchandise" readOnly="true">
+<apex:dataTable value="{!merchandise}" var="merch">	
+	<apex:column >
+			<apex:facet name="header">Name</apex:facet>
+			<apex:outputText value="{!merch.name}"/>
+	</apex:column>
+	<apex:column >
+			<apex:facet name="header">Price</apex:facet>
+			<apex:outputText value="{!merch.Price__c}"/>
+	</apex:column>
+	<apex:column >
+			<apex:facet name="header">Quantity</apex:facet>
+			<apex:outputText value="{!merch.Quantity__c}"/>
+	</apex:column>
+</apex:dataTable>	
+</apex:page>

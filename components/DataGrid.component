@@ -1,0 +1,56 @@
+<apex:component controller="DataGrid">
+<apex:attribute name="recordID" type="ID" description="The ID of the Invoice holding the Line Items" assignTo="{!recordId}"/>
+<apex:attribute name="query" type="String" description="SOQL Query" assignTo="{!query}"/>
+<apex:attribute name="caption" type="String" description="Title for the grid" assignTo="{!caption}"/>
+
+
+
+<head>
+<apex:stylesheet value="{!URLFOR($Resource.jQueryCometD,'jquery-ui.css')}" />
+<apex:stylesheet value="{!URLFOR($Resource.jqGrid,'css/ui.jqgrid.css')}" />
+<script src="{!URLFOR($Resource.jqGrid,'js/jquery-1.9.0.min.js')}" type="text/javascript"></script>
+<script src="{!URLFOR($Resource.jqGrid,'js/i18n/grid.locale-en.js')}" type="text/javascript"></script>
+<script src="{!URLFOR($Resource.jqGrid,'js/jquery.jqGrid.min.js')}" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+j$ = jQuery.noConflict();
+
+j$(document).ready(function(){ 
+  j$("#list").jqGrid({
+    datatype: 'local',
+    colNames:['Id', 'Name'],
+    colModel :[ 
+      {name:'Id', index:'Merchandise__r.Id', width:55}, 
+      {name:'Name', index:'Merchandise__r.Name', width:90},  
+    ],
+    rowNum:10,
+    rowList:[10,20,30],
+    sortname: 'Nam',
+    sortorder: 'desc',
+    viewrecords: true,
+    gridview: true,
+    caption: '{!caption}'
+  });
+  callData();
+}); 
+
+j$.extend(j$.fn.jqGrid, { setData: function(data) {
+    this[0].p.data = data;
+    return true;
+} } );
+
+
+function callData() {
+	DataGrid.soql("{!query}",function handleData(results,msg) {
+		console.log(results);
+		j$("#list").jqGrid('setData', results);
+		j$("#list").trigger("reloadGrid");
+	});	
+}
+</script>
+</head>
+<body>
+<table id="list"><tr><td></td></tr></table> 
+</body>
+</apex:component>

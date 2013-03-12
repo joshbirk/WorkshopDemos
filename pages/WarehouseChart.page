@@ -1,0 +1,4 @@
+<apex:page controller="WarehouseChartController">
+    <H1>Line Item Totals</H1>
+	<c:WarehouseInvoiceChart invoiceID="a01d0000006YqRO" />
+</apex:page>

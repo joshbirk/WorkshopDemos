@@ -1,0 +1,15 @@
+<apex:page controller="WarehouseDash">
+	<apex:pageBlock >
+		<apex:pageBlockTable value="{!invoices}" var="i">
+			<apex:column >
+				<apex:outputLink value="/{!i.Id}" target="top">{!i.Name}</apex:outputLink>
+			</apex:column>
+			<apex:column >
+				{!i.Invoice_Total__c}
+			</apex:column>
+			<apex:column >
+				{!i.Status__c}
+			</apex:column>
+		</apex:pageBlockTable>
+	</apex:pageBlock>
+</apex:page>

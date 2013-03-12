@@ -1,0 +1,24 @@
+<apex:page controller="WarehouseListPage_Remote" readOnly="true">
+<script>	
+	function updateQuantity(recordId,quantity) {
+		WarehouseListPage_Remote.updateQuantity(recordId,quantity,function(res,mes) {
+			document.getElementById("output").innerHTML = res;
+		});
+	}
+</script>	
+	<div id="output"></div>
+	
+	<apex:pageBlock >
+		<apex:pageBlockTable value="{!merchandise}" var="m">
+			<apex:column >
+				<apex:outputField value="{!m.Name}" />
+			</apex:column>
+			<apex:column >
+				<apex:outputField value="{!m.Price__c}" />
+			</apex:column>
+			<apex:column >
+				<input value="{!m.Quantity__c}" onblur="updateQuantity('{!m.Id}',this.value)" />
+			</apex:column>
+		</apex:pageBlockTable>
+	</apex:pageBlock>	
+</apex:page>

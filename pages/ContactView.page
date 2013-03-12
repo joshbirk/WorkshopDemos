@@ -1,0 +1,8 @@
+<apex:page standardController="Contact" showHeader="false" renderAs="PDF">
+<apex:form >
+    
+    <apex:inputField value="{!Contact.LastName}" />, {!Contact.FirstName}
+    <apex:commandButton value="Submit" action="{!quicksave}" rerender="LastName" />
+    <apex:outputPanel id="LastName">{!Contact.LastName}</apex:outputPanel>
+   </apex:form>    
+</apex:page>

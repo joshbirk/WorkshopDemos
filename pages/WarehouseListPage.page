@@ -1,0 +1,27 @@
+<apex:page controller="WarehouseListPage">
+	<apex:form>
+	
+	<apex:actionFunction name="updateQuantity" action="{!updateQuantity}" rerender="output">
+		<apex:param name="recordId" value="" assignTo="{!recordId}"/>
+		<apex:param name="quantity" value="" assignTo="{!quantity}"/>
+	</apex:actionFunction>
+	
+	<apex:outputPanel id="output"><apex:outputText value="{!output}" /></apex:outputPanel>
+	
+	<apex:pageBlock >
+		<apex:pageBlockTable value="{!merchandise}" var="m">
+			<apex:column >
+				<apex:outputField value="{!m.Name}" />
+			</apex:column>
+			<apex:column >
+				<apex:outputField value="{!m.Price__c}" />
+			</apex:column>
+			<apex:column >
+				<apex:inputField value="{!m.Quantity__c}"
+				 	onblur="updateQuantity('{!m.Id}',this.value)"/>
+			</apex:column>
+		</apex:pageBlockTable>
+	</apex:pageBlock>
+	</apex:form>
+	
+</apex:page>

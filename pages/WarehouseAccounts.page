@@ -1,0 +1,5 @@
+<apex:page StandardController="Warehouse_Location__c" sidebar="false" showheader="false" standardStylesheets="true">
+
+<c:WarehouseAccounts lat="{!Warehouse_Location__c.Location__Latitude__s}" long="{!Warehouse_Location__c.Location__Longitude__s}" />
+
+</apex:page>

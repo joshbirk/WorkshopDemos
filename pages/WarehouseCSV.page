@@ -1,0 +1,6 @@
+<apex:page controller="WarehouseCSVController" contenttype="text/csv#merch.csv" showheader="false" standardStyleSheets="false" readOnly="true">
+Name,Quantity__c,Price__c
+<apex:repeat value="{!allMerchandise}" var="merch">
+{!merch.Name},{!merch.Quantity__c},{!merch.Price__c}
+</apex:repeat>
+</apex:page>

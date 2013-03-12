@@ -1,0 +1,76 @@
+<apex:page controller="PushTopicController">
+	
+	<style> 
+	#topicsList input, .long { 
+				width: 200px; 
+				} 
+	#topicsList { 
+				list-style: none;
+		        padding: 0;
+		}
+	#topicsList li {
+				margin-bottom: 5px;
+				color: #999;
+	}			
+	</style>
+	
+	<div id="page" style="width: 700px;">
+	<apex:form >
+	
+	
+	<apex:outputPanel id="list" >
+	<div style="float: left; width: 250px;">
+		<UL id="topicsList">
+		<apex:repeat value="{!pushtopics}" var="topic">
+		<LI><apex:commandButton action="{!setCurrentTopic}" rerender="object, list" value="{!topic.Name}" disabled="{!currentPushTopic != null}">
+						<apex:param name="topicId{!topic.Id}" value="{!topic.Id}" assignTo="{!editTopicId}" />
+			</apex:commandButton><BR />
+			<apex:outputText value="{!topic.Description}" /><BR />
+		</LI>
+		</apex:repeat>
+		<LI><apex:commandButton action="{!setCurrentTopic}" rerender="object, list" value="New Topic" disabled="{!currentPushTopic != null}">
+							<apex:param value="New" assignTo="{!editTopicId}" />
+			</apex:commandButton></LI>
+		</UL>
+	
+	</div>
+	</apex:outputPanel>
+	
+	<apex:outputPanel id="object" >
+	<div style="float: right; width: 350px;">
+	<apex:outputPanel id="form" rendered="{!currentPushTopic != null}" >
+	<apex:pageBlock >
+	
+	<apex:PageBlockButtons >
+		<apex:commandButton action="{!saveCurrentTopic}" rerender="object, list" value="Upsert" />
+		<apex:actionRegion >
+			<apex:commandButton onmousedown="if(confirm('Really?')){deleteCurrentTopic();}" value="Delete" disabled="{!currentPushTopic.Id == null}" />
+			<apex:actionFunction action="{!deleteCurrentTopic}" name="deleteCurrentTopic" rerender="object, list" />		
+		</apex:actionRegion>
+		<apex:actionRegion >
+			<apex:commandButton action="{!cancelCurrentTopic}" rerender="object, list" value="Cancel" />
+		</apex:actionRegion>
+	</apex:PageBlockButtons>
+	
+	<apex:pageBlockSection >
+	<apex:inputField value="{!currentPushTopic.Name}" /><BR />
+	<apex:inputField value="{!currentPushTopic.Description}" /><BR />
+	<apex:inputField value="{!currentPushTopic.Query}"  /><BR />
+	<apex:inputField value="{!currentPushTopic.ApiVersion}" /><BR />	
+	<apex:inputField value="{!currentPushTopic.NotifyForOperations}" />
+		<em>a = 'all', c = 'create', u = 'update'</em><BR />
+	<apex:inputField value="{!currentPushTopic.NotifyForFields}" />
+		<em>s = 'select', w = 'where', r = 'referenced', a = 'all'</em><BR />
+	
+	</apex:pageBlockSection>
+	
+	</apex:pageBlock>
+		
+		
+	</apex:outputPanel>
+	</div>
+	</apex:outputPanel>
+	</apex:form>
+	</div>
+
+</apex:page>

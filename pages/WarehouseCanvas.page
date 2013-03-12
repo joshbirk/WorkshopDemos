@@ -1,0 +1,6 @@
+<apex:page StandardController="Invoice__c" showHeader="false">
+	<apex:pageBlock>
+		<apex:canvasApp developerName="MTrack1" applicationName="MTrack1"
+		 	parameters="{invoiceId:'{!Invoice__c.Id}'}"/>
+	</apex:PageBlock>	
+</apex:page>

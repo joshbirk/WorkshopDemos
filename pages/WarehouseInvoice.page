@@ -1,0 +1,56 @@
+<apex:page standardController="Invoice__c" extensions="WarehouseInvoiceController">
+	
+	<apex:form >
+	<apex:actionFunction name="quickSave" action="{!quickSave}" rerender="invoice" status="myStatus"/>
+	
+	<apex:pageBlock >
+	<apex:pageBlockSection columns="1" title="{!Invoice__c.Name}" id="invoice">
+	  <apex:outputText value="{!Invoice__c.Invoice_Total__c}"/>
+       <apex:inputField value="{!Invoice__c.Status__c}" id="status" onchange="quickSave()"></apex:inputField>
+	   <apex:actionStatus startText="Updating" stopText="" id="myStatus" />
+     </apex:pageBlockSection>
+
+	<apex:pageBlockSection title="Value By Merchandise">
+		<c:WarehouseInvoiceChart invoiceID="{!Invoice__c.Id}" />
+	</apex:pageBlockSection>
+	
+	<apex:pageBlockSection title="Line Items">
+	<apex:dataTable value="{!line_items}" var="line" id="theTable" rowClasses="odd,even" styleClass="tableClass" width="500">
+				<apex:column >
+		        	<apex:facet name="header">Number</apex:facet>
+		            <apex:outputText value="{!line.Name}" />
+		        </apex:column>
+		        <apex:column >
+		            <apex:facet name="header">Merchandise</apex:facet>
+		            <apex:outputText value="{!line.Merchandise__r.Name}" />
+		        </apex:column>
+				<apex:column >
+		            <apex:facet name="header">Quantity</apex:facet>
+		            <apex:inputField value="{!line.Quantity__c}" />
+					<apex:facet name="footer"><apex:commandButton action="{!updateLineItems}" value="Update" /></apex:facet>
+		        </apex:column>
+				<apex:column >
+		            <apex:facet name="header">Unit Price</apex:facet>
+		            <apex:outputText value="{!line.Unit_Price__c}" />
+		        </apex:column>
+	</apex:dataTable>
+	Showing Page {!page_number} of {!page_count}
+	</apex:pageBlockSection>
+	
+	<apex:pageBlockSection columns="1" title="New Line Item" id="newLineItem">
+	        <apex:inputField value="{!new_line_item.Name}" ></apex:inputField>
+			<apex:inputField value="{!new_line_item.Merchandise__c}" ></apex:inputField>
+			<apex:inputField value="{!new_line_item.Quantity__c}" ></apex:inputField>
+			<apex:pageBlockSectionItem >
+			<apex:outputText value="" /><apex:commandButton action="{!insertNewLineItem}" value="Create" rerender="theTable,newLineItem" />
+			</apex:pageBlockSectionItem>
+	</apex:pageBlockSection>
+	
+	
+	</apex:pageBlock>
+	
+	
+	</apex:form>
+	
+	
+</apex:page>

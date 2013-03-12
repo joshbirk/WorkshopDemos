@@ -1,0 +1,40 @@
+<apex:component controller="Isotope">
+<apex:attribute name="recordID" type="ID" description="Parent ID" assignTo="{!recordId}"/>
+<apex:includeScript value="{!URLFOR($Resource.jqGrid,'js/jquery-1.9.0.min.js')}" />
+<apex:includeScript value="{!URLFOR($Resource.isotope)}"  />
+<apex:stylesheet value="{!URLFOR($Resource.isotopeStyle)}" />
+<script type="text/javascript">
+j$ = jQuery.noConflict();
+
+j$(document).ready(function(){ 
+  j$('#container').isotope({
+	  // options
+	  itemSelector : '.element',
+	});
+});
+</script>
+
+<H1>Line Items by Quantity</H1>
+<div id="container">
+<apex:repeat value="{!line_items}" var="item">
+<apex:outputPanel layout="none" rendered="{!item.Quantity__c <= 5}">
+	<div class="element metalloid" data-symbol="Rb" data-category="alkali" style="width:{!item.Quantity__c}25px">
+	      <p class="weight">{!item.Quantity__c}</p>
+	      <h2 class="name">{!item.Merchandise__r.Name}</h2>
+	      <p class="number">${!item.Line_Item_Total__c}</p>
+	    </div>
+</apex:outputPanel>
+
+<apex:outputPanel layout="none" rendered="{!item.Quantity__c > 5}">
+	<div class="element alkali metal" data-symbol="Rb" data-category="alkali" style="width:{!item.Quantity__c}25px">
+	      <p class="weight">{!item.Quantity__c}</p>
+	      <h2 class="name">{!item.Merchandise__r.Name}</h2>
+	      <p class="number">${!item.Line_Item_Total__c}</p>
+	    </div>
+</apex:outputPanel>
+</apex:repeat>
+</div>
+
+
+
+</apex:component>
