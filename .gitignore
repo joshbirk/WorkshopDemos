@@ -3,7 +3,6 @@ package.xml
 build.properties
 build.xml
 1.manifest
-staticresources
 request.xml
 response.xml
 scratch.txt
