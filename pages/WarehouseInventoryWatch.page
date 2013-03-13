@@ -1,4 +1,4 @@
-<apex:page>
+<apex:page >
 	<link rel="stylesheet" type="text/css" media="screen" href="css/ui-lightness/jquery-ui-1.7.1.custom.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
 

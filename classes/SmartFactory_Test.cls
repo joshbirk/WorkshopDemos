@@ -16,60 +16,73 @@
 
 @isTest
 private class SmartFactory_Test {
-	static {
-		SmartFactory.FillAllFields = true; // increase test coverage without creating custom objects
-	}  
-	
-	static testMethod void createsSingleObjectWithSingleRequiredStringField() {
-		Account account = (Account)SmartFactory.createSObject('Account');
-		insert account;
-		System.assert(account.Id != null);
-		System.assert(account.Name != null);
-	}
-	
-	static testMethod void createsObjectWithCascadeSetsLookupField() {
-		Contact contact = (Contact)SmartFactory.createSObject('Contact', true);
-		insert contact;
-		System.assert(contact.Id != null);
-		System.assert(contact.AccountId != null);
-	}
-	
-	static testMethod void createsObjectWithoutCascadeDoesNotSetLookupField() {
-		Contact contact = (Contact)SmartFactory.createSObject('Contact', false);
-		insert contact;
-		System.assert(contact.AccountId == null);
-	}
-	
-	static testMethod void createObjectWithUnsupportedTypeThrowsException() {
-		try {
-			SmartFactory.createSObject('Unsupported');
-			System.assert(false);
-		} catch (UnsupportedObjectTypeException ex) {
-			System.assert(true);
-		}
-	}
-	
-	static testMethod void creating401UniqueRecords() {
-		
-		List<SObject> contactsAsSObjects = SmartFactory.createSObjectList('Contact', false, 401);
-		insert contactsAsSObjects;
-		for (SObject s : contactsAsSObjects)
-		{
-			Contact c = (Contact) s;
-			System.assert(c.Id != null);
-		}
-	}  
-	
-	/**
-		Reproduces this issue
-		https://github.com/mbotos/SmartFactory-for-Force.com/issues/3
-	*/
+    static {
+        SmartFactory.FillAllFields = true; // increase test coverage without creating custom objects
+    }  
+    
+    static testMethod void createsSingleObjectWithSingleRequiredStringField() {
+        Account account = (Account)SmartFactory.createSObject('Account');
+        insert account;
+        System.assert(account.Id != null);
+        System.assert(account.Name != null);
+    }
+    
+    static testMethod void createsObjectWithCascadeSetsLookupField() {
+        Contact contact = (Contact)SmartFactory.createSObject('Contact', true);
+        insert contact;
+        System.assert(contact.Id != null);
+        System.assert(contact.AccountId != null);
+    }
+    
+    static testMethod void createsObjectWithoutCascadeDoesNotSetLookupField() {
+        Contact contact = (Contact)SmartFactory.createSObject('Contact', false);
+        insert contact;
+        System.assert(contact.AccountId == null);
+    }
+    
+    static testMethod void createObjectWithUnsupportedTypeThrowsException() {
+        try {
+            SmartFactory.createSObject('Unsupported');
+            System.assert(false);
+        } catch (UnsupportedObjectTypeException ex) {
+            System.assert(true);
+        }
+    }
+    
+    static testMethod void creating10UniqueRecords() {
+        
+        List<SObject> contactsAsSObjects = SmartFactory.createSObjectList('Contact', false, 10);
+        insert contactsAsSObjects;
+        for (SObject s : contactsAsSObjects)
+        {
+            Contact c = (Contact) s;
+            System.assert(c.Id != null);
+        }
+    }
+
+/*    
+    static testMethod void creating401UniqueRecords() {
+        
+        List<SObject> contactsAsSObjects = SmartFactory.createSObjectList('Contact', false, 401);
+        insert contactsAsSObjects;
+        for (SObject s : contactsAsSObjects)
+        {
+            Contact c = (Contact) s;
+            System.assert(c.Id != null);
+        }
+    }  
+    
+    */
+    /**
+        Reproduces this issue
+        https://github.com/mbotos/SmartFactory-for-Force.com/issues/3
+    */
 /*
     static testMethod void loadTestWith100PlusAccountNContacts() {
-    	for (Integer idx = 0; idx <= 101; idx++)
-    		Account account = (Account)SmartFactory.createSObject('Account');
-		for (Integer idx = 0; idx <= 101; idx++)
-    		Contact cont = (Contact)SmartFactory.createSObject('Contact');    		
+        for (Integer idx = 0; idx <= 101; idx++)
+            Account account = (Account)SmartFactory.createSObject('Account');
+        for (Integer idx = 0; idx <= 101; idx++)
+            Contact cont = (Contact)SmartFactory.createSObject('Contact');          
     }
 */
 }

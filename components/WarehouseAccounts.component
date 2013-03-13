@@ -1,23 +1,25 @@
 <apex:component controller="WarehouseAccountsController">
-<apex:attribute name="lat" type="Decimal" description="Latitude for Geolocation Query" assignTo="{!lat}"/>
-<apex:attribute name="long" type="Decimal" description="Longitude for Geolocation Query" assignTo="{!lng}"/>
+
+<apex:attribute name="lat"  type="Decimal" description="Latitude for geolocation query"  assignTo="{!lat}"/>
+<apex:attribute name="long" type="Decimal" description="Longitude for geolocation query" assignTo="{!lng}"/>
+
 <apex:pageBlock >
-	<apex:pageBlockSection title="Accounts Less than 100 Miles Away">
-	<apex:Messages /><br />
-	<apex:dataTable rendered="{!count > 0}" width="600" value="{!accounts}" var="account" id="theTable" rowClasses="odd,even"  styleClass="tableClass">
-		<apex:column >
-			<apex:facet name="header">Name</apex:facet>
-			<apex:outputLink value="/{!account.Id}" target="_top"><apex:outputText value="{!account.Name}"/></apex:outputLink>
-		</apex:column>
-		<apex:column >
-			<apex:facet name="header">Shipping Address</apex:facet>
-			<apex:outputText value="{!account.ShippingStreet}"/>
-		</apex:column>
-		<apex:column >
-			<apex:facet name="header">Shipping City</apex:facet>
-			<apex:outputText value="{!account.ShippingCity}"/>
-		</apex:column>
-	</apex:dataTable>
-	</apex:pageBlockSection>
+    <apex:pageBlockSection title="Accounts within 100 miles">
+    <apex:Messages /><br />
+    <apex:dataTable rendered="{!count > 0}" width="600" value="{!accounts}" var="account" id="theTable" rowClasses="odd,even"  styleClass="tableClass">
+        <apex:column >
+            <apex:facet name="header">Account</apex:facet>
+            <apex:outputLink value="/{!account.Id}" target="_top"><apex:outputText value="{!account.Name}"/></apex:outputLink>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">Shipping Address</apex:facet>
+            <apex:outputText value="{!account.ShippingStreet}"/>
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">Shipping City</apex:facet>
+            <apex:outputText value="{!account.ShippingCity}"/>
+        </apex:column>
+    </apex:dataTable>
+    </apex:pageBlockSection>
 </apex:pageBlock>
 </apex:component>

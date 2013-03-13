@@ -1,0 +1,6 @@
+<apex:page StandardController="Merchandise__c" recordsetVar="merchandise" showheader="false" standardStyleSheets="false" contentType="text/csv">
+Name,Quantity__c,Price__c
+<apex:repeat value="{!merchandise}" var="merch">
+"{!merch.Name}",{!merch.Quantity__c},{!merch.Price__c}
+</apex:repeat>
+</apex:page>
