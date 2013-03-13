@@ -1,0 +1,110 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false" controller="MobileInventoryExtension" doctype="html-5.0">
+
+<apex:stylesheet value="{!URLFOR($Resource.jQuery, 'jquery/jquery.mobile-1.1.0.min.css')}" />
+<apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery/jquery-1.7.2.min.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.jQuery, 'jquery/jquery.mobile-1.1.0.min.js')}"/>
+<apex:includeScript value="{!$Resource.Cordova}"/>
+
+<body>
+	<div data-role="page" data-theme="b" id="mainpage">
+	   <div data-role="header">
+	      <h1>Inventory</h1>
+	   </div>
+	   <div data-role="content">
+	      <ul id="mechandise" data-inset="true" data-role="listview" data-theme="c" data-dividertheme="c">
+	      </ul>
+	   </div>
+	</div>  
+	
+	<div data-role="page" data-theme="b" id="detailpage">
+	   <div data-role="header">
+	      <a href='#mainpage' id="backInventory" class='ui-btn-left' data-icon='arrow-l'>Inventory</a>
+	      <h1><span id="Name"></span></h1>
+	   </div>
+	   <div data-role="content">
+	       <strong>Price:</strong><span id="Price__c"></span><br />
+	       <strong>Description:</strong><BR />
+	       <span id="Description__c"></span>
+	       <p><strong>Total Inventory:</strong><input type="text" id="Total_Inventory__c" value="" /></p>
+	       <button id="update" data-id="" class="updateBtn">Update</button>
+	   	   <div style="margin-left:auto;
+					  margin-right:auto;
+					  width:70%;">
+			<image id="prodImageBtn" src="{!URLFOR($Resource.glyphish, '86-camera.png')}" style="float: left; width: 200px; height: 200px; border: 1px solid #999; margin-right: 10px;" />
+      	   </div>
+	   </div>
+	</div>
+</body>
+
+<script>
+    j$ = jQuery.noConflict();
+    var merchandises = new Array();
+    j$(document).on('ready', function(callback) {
+         MobileInventoryExtension.queryMerchandise(function(records, e) { 
+	            render(records);
+    			console.log('Hello World');
+	        });
+	    
+        //event handler for update button
+        j$(".updateBtn").click(function() {
+             var id = j$(this).attr('data-id');
+             var inventory = parseInt(j$("#Total_Inventory__c").val());
+             j$.mobile.showPageLoadingMsg();
+             MobileInventoryExtension.updateMerchandiseItem(id,inventory,handleUpdate);
+         });
+         
+         j$("#prodImageBtn").click(function() {
+		    console.log('image cap started');
+         	navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 25, destinationType : Camera.DestinationType.DATA_URL });
+         });
+    });
+
+	//our document is loaded, render the interface
+    function render(records) {
+        j$.each(records,
+            function() {
+               merchandises[this.Id] = this; 
+               j$('#mechandise').append(
+                  '<li id="' + this.Id + '">' + 
+                       '<h3>' + this.Name + '</h3>' +
+                       '<p>' + this.Description__c + '</p>' + 
+                  '</li>'
+               );
+            });
+        
+        j$('#mechandise').listview('refresh')
+        .find('li').click(function(e) {
+           var merchandise = merchandises[this.id];
+           j$('#Name').text(merchandise.Name);
+           j$('#Price__c').text(merchandise.Price__c);
+           j$('#Description__c').text(merchandise.Description__c);
+           j$('#Total_Inventory__c').val(merchandise.Quantity__c);
+           j$('#update.updateBtn').attr('data-id', merchandise.Id);
+           j$.mobile.changePage('#detailpage', {changeHash: true});
+        });
+    }
+     
+    function handleUpdate(result,event) {
+        alert(result);
+        if(result == 'Item Updated') { dataChanged = true; }
+        j$.mobile.hidePageLoadingMsg();
+    }
+    
+    function onPhotoDataSuccess(imageData) {
+      document.getElementById('prodImageBtn').style.opacity = 0.1;
+	  console.log(imageData);
+	  MobileInventoryExtension.saveImage(imageData, j$('#update').attr('data-id'), j$('#Name').text(), 
+			function(res,event){ 		
+				document.getElementById('prodImageBtn').style.opacity = 1; 
+    			console.log(res);
+			});
+      document.getElementById('prodImageBtn').src = "data:image/jpeg;base64," + imageData;
+	  
+    }
+    
+    function onFail(message) {
+    	console.log(message);
+    }
+</script>
+<!-- </html> -->
+</apex:page>
